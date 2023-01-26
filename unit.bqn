@@ -1,33 +1,31 @@
-⟨Assert, _must_fail⟩⇐
+⟨Assert, _must_fail, _describe_, ⟩⇐
 
 # Globals and their setters (if applicable)
-test_data←⟨⟩
+test_data←↕3‿0
 # stack of describe calls (?)
 stk←⟨"global"⟩
+pass←0
+fail←0
+assert←0
+err←0
 
+# pass=1, fail=0.
 _must_fail←{
-  w 𝔽 _𝕣 x:
-  p←0
-  𝔽⎊{•Show "Test passed", p↩1} 𝕩
-	{¬p?
-	  ("Function did not error on inputs 𝕨←"∾(•Repr w)∾" and 𝕩←"∾•Repr x) ! 0
-	}
+  Block _𝕣 ·:
+  0∘Block⎊1 @
 }
 
 Assert←{
-	1:
+	assert+↩1
+  res←{
+    1:pass+↩1,1
+    ·:fail+↩1,0
+  }𝕩
+  test_data∾˘↩⟨⊑stk,≠stk,res⟩
 }
-
-_assert_eq_←{
-  fr←𝕨𝔽𝕩
-  gr←𝕨𝔾𝕩
-	"Got: "(•Repr fr)∾(@+10)∾" Expected:"∾(•Repr gr) ! fr≡gr 
-}
-
-Get_test_data←{𝕊:test_data}
 
 _describe_←{
   title _𝕣_ block ·:
-  stk∾↩⋈title
+  stk∾˜↩⋈title
   Block title
 }
